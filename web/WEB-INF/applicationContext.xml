@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/p http://www.springframework.org/schema/p/spring-p.xsd">
+
+    <!--DataSource-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/lpl"/>
+        <property name="username" value="clblue"/>
+        <property name="password" value="Pass456@"/>
+    </bean>
+    <!--SessionFactory-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>com/clblue/web/hbmdemo/po/User.hbm.xml</value>
+                <!--<value>user/Product.hbm.xml</value>-->
+            </list>
+        </property>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--依赖注入HibernateTemplate-->
+    <bean id="productDao" class="dao.ProductDaoOldImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+    <bean id="userDao" class="com.clblue.web.hbmdemo.dao.UserDaoOldImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+
+    <!--依赖注入Dao组件-->
+    <bean id="productService" class="service.ProductServiceImpl">
+        <property name="dao" ref="productDao"/>
+    </bean>
+    <bean id="userService" class="com.clblue.web.hbmdemo.service.UserServiceImpl">
+        <property name="dao" ref="userDao"/>
+    </bean>
+
+    <!--依赖注入业务逻辑组件-->
+    <bean id="addAction" class="action.addAction">
+        <property name="service" ref="productService"/>
+    </bean>
+    <bean id="showAll" class="action.ShowAllAction">
+        <property name="service" ref="productService"/>
+    </bean>
+    <bean id="deleteAction" class="action.deleteAction">
+        <property name="service" ref="productService"/>
+    </bean>
+    <bean id="updateAction" class="action.UpdateAction">
+        <property name="service" ref="productService"/>
+    </bean>
+
+    <!--业务逻辑组件-用户管理-->
+    <bean id="showAllUserAction" class="com.clblue.web.hbmdemo.action.ShowAllUserAction" scope="prototype">
+        <property name="service" ref="userService"/>
+    </bean>
+    <bean id="addUserAction" class="com.clblue.web.hbmdemo.action.AddUserAction" scope="prototype">
+        <property name="service" ref="userService"/>
+    </bean>
+    <bean id="deleteUserAction" class="com.clblue.web.hbmdemo.action.DeleteUserAction" scope="prototype">
+        <property name="service" ref="userService"/>
+    </bean>
+    <bean id="updateUserAction" class="com.clblue.web.hbmdemo.action.UpdateUserAction" scope="prototype">
+    <property name="service" ref="userService"/>
+    </bean>
+    <bean id="showUserDetailAction" class="com.clblue.web.hbmdemo.action.UserDetailAction" scope="prototype">
+        <property name="service" ref="userService"/>
+    </bean>
+
+<!--    <bean id="transactionManager"
+    class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+    p:sessionFactory-ref="sessionFactory"/>
+
+    &lt;!&ndash; 用注解来实现事务管理  将所有具有@Transactional 注解的文件自动配置为声明式事务支持&ndash;&gt;
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    &lt;!&ndash; xml配置事务 &ndash;&gt;
+    <tx:advice id="txAdviceHibernate" transaction-manager="transactionManager">
+    <tx:attributes>
+    <tx:method name="delete*" propagation="REQUIRED"/>
+    <tx:method name="update*" propagation="REQUIRED"/>
+    <tx:method name="save*" propagation="REQUIRED"/>
+    <tx:method name="*" read-only="true"/>
+    </tx:attributes>
+    </tx:advice>
+    <aop:config>
+    <aop:pointcut id="serviceMethodsHibernate" expression="execution(public * service.*(..))"/>
+    <aop:advisor advice-ref="txAdviceHibernate" pointcut-ref="serviceMethodsHibernate"/>
+    </aop:config>-->
+</beans>

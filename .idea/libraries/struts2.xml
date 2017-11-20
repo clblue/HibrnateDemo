@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="struts2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ku/commons-io.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/commons-fileupload.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/commons-lang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/freemarker.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/ognl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/struts2-annotations.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/struts2-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/log4j-api-2.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/log4j-core-2.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/log4j-jcl-2.8.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ku/struts2-spring-plugin-2.5.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

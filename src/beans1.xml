@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="targetUser" class="user.User" autowire="constructor">
+    </bean>
+
+    <bean id="username" class="java.lang.String">
+        <constructor-arg value="xiaoming"/>
+    </bean>
+    <bean id="password" class="java.lang.String">
+        <constructor-arg value="678"/>
+    </bean>
+
+    <bean id="product" class="user.Product">
+        <property name="id" value="12"/>
+        <property name="name" value="ruddle"/>
+        <property name="price" value="13.5"/>
+    </bean>
+
+    <bean id="welcome" class="advice.Welcome"/>
+    <bean id="goodbey" class="advice.Goodbey"/>
+    <bean id="watch" class="advice.Watch"/>
+    <bean id="error" class="advice.Error"/>
+
+    <bean id="user" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames">
+            <list>
+                <value>welcome</value>
+                <value>goodbey</value>
+                <value>watch</value>
+                <value>error</value>
+            </list>
+        </property>
+        <property name="target" ref="targetUser"/>
+    </bean>
+
+
+</beans>
